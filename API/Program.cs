@@ -1,5 +1,6 @@
 using API.Extensions;
 using API.MiddleWare;
+using API.SignalR;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -37,6 +38,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/chat");
 
 var scoped = app.Services.CreateScope();
 var services = scoped.ServiceProvider;
