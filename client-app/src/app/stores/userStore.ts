@@ -57,4 +57,8 @@ export default class UserStore {
             console.log(error);
         }
     }
+
+    setDisplayName = (name: string) => {
+        if(this.user) this.user.displayName = name;
+    }
 }
