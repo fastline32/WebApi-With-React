@@ -1,4 +1,5 @@
 using Application.Core;
+using Domain.Entities;
 using MediatR;
 using Persistence.Data;
 
@@ -21,12 +22,12 @@ namespace Application.Activities
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var activity = await _context.Activities.FindAsync(request.Id);
+                Activity activity = await _context.Activities.FindAsync(request.Id);
 
                 if(activity == null) return null;
 
                 _context.Activities.Remove(activity);
-                var result = await _context.SaveChangesAsync() > 0;
+                bool result = await _context.SaveChangesAsync() > 0;
                 if(!result) return Result<Unit>.Failure("Failed to delete activity");
 
                 return Result<Unit>.Success(Unit.Value);

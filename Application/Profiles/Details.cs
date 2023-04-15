@@ -1,4 +1,5 @@
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
@@ -19,9 +20,11 @@ namespace Application.Profiles
         {
             private readonly DataContext _db;
             private readonly IMapper _mapper;
+            private readonly IUserAccessor _userAccessor;
 
-            public Handler(DataContext db, IMapper mapper)
+            public Handler(DataContext db, IMapper mapper, IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _db = db;
                 _mapper = mapper;
             }
@@ -29,7 +32,7 @@ namespace Application.Profiles
             public async Task<Result<Profile>> Handle(Query request, CancellationToken cancellationToken)
             {
                 Profile user = await _db.Users
-                            .ProjectTo<Profile>(_mapper.ConfigurationProvider)
+                            .ProjectTo<Profile>(_mapper.ConfigurationProvider, new {currentUsername = _userAccessor.GetUserName()})
                             .SingleOrDefaultAsync(x => x.Username == request.Username);
 
                 if(user == null) return null;
