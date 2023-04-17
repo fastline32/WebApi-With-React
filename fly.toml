@@ -1,0 +1,23 @@
+# fly.toml file generated for reactivity-app on 2023-04-17T16:29:57+03:00
+
+app = "reactivity-app"
+primary_region = "ams"
+
+[build]
+  image = "infomailfromsavov/reactivities:latest"
+
+[env]
+  ASPNETCORE_URLS="http://+:8080"
+  Claudinary__CloudName="dsubnrvca"
+  Claudinary__ApiKey="957255988455131"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+
+[checks]
+  [checks.alive]
+    type = "tcp"
+    interval = "15s"
+    timeout = "2s"
+    grace_period = "5s"
