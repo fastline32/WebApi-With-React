@@ -37,8 +37,12 @@ app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.MapControllers();
 app.MapHub<ChatHub>("/chat");
+app.MapFallbackToController("Index","Fallback");
 
 var scoped = app.Services.CreateScope();
 var services = scoped.ServiceProvider;
